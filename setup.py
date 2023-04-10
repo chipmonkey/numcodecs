@@ -14,6 +14,7 @@ have_sse2 = 'sse2' in flags
 have_avx2 = 'avx2' in flags
 disable_sse2 = 'DISABLE_NUMCODECS_SSE2' in os.environ
 disable_avx2 = 'DISABLE_NUMCODECS_AVX2' in os.environ
+aarch64 = cpu_info['arch_string_raw'] == 'aarch64'
 
 # setup common compile arguments
 have_cflags = 'CFLAGS' in os.environ
@@ -21,7 +22,7 @@ base_compile_args = []
 if have_cflags:
     # respect compiler options set by user
     pass
-elif os.name == 'posix':
+elif os.name == 'posix' and not aarch64:
     if disable_sse2:
         base_compile_args.append('-mno-sse2')
     elif have_sse2:
