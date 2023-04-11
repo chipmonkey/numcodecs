@@ -12,9 +12,13 @@ cpu_info = cpuinfo.get_cpu_info()
 flags = cpu_info.get('flags', [])
 have_sse2 = 'sse2' in flags
 have_avx2 = 'avx2' in flags
+aarch64 = cpu_info['arch_string_raw'] == 'aarch64'
+if aarch64:
+    os.environ['DISABLE_NUMCODECS_SSE2'] = "YES"
+    os.environ['DISABLE_NUMCODECS_AVX2'] = "YES"
+
 disable_sse2 = 'DISABLE_NUMCODECS_SSE2' in os.environ
 disable_avx2 = 'DISABLE_NUMCODECS_AVX2' in os.environ
-aarch64 = cpu_info['arch_string_raw'] == 'aarch64'
 
 # setup common compile arguments
 have_cflags = 'CFLAGS' in os.environ
